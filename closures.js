@@ -43,61 +43,73 @@ count() // 3
 count() // 4
 
 // 4 //
-/*Write a function that does something simple (console, alert, etc). Write a second function 
-  that accepts the first function as it's first parameter. The second function should return 
-  a new third function which, when invoked, invokes the first, original function that was passed in, 
-  but will only ever do so once.*/
-var alertFn = function () {
-  alert('the alert');
+/*Write a function that does something simple (console, alert, etc).*/
+var consoleFn = function () {
+  console.log('Success!');
 };
-var acceptorFn = function (aThirdFn) {
-  return function (alertFn) {
-    for (var i = 0; i < 1; i++) {
-    }
-  }
-};
-
-
-// 5 //
-/*Now, similar to the last problem, write a function called 'fnCounter' that accepts two parameters. 
-The first parameter will be an anonymous function and the second parameter, 'N', will be a number. 
-Now, in 'fnCounter', allow the anonymous funciton to be invoked 'N' number of times. 
-After it's been invoked 'N' number of times, return 'STOP'.*/
-
-
-/*var counter = function(){
-    for (var i=1; i<=5; i++) {
-      setTimeout( function timer(){
-          console.log( i );
-      }, i*1000 );
+/*Write a second function that accepts the first function as it's first parameter.*/
+/*The second function should return a new third function*/
+var makeSingleUse = function (cbFunction) {
+  /*when invoked, the third function invokes the first*/
+  var x = 0;
+  return function () {
+    /*original function that was passed in, but will only ever do so once.*/
+    if (x < 1) {
+      x++;
+      cbFunction();
     }
   };
+};
+var callMeOnce = makeSingleUse(consoleFn);
 
-  Above you have a function named counter. Examine the function (without running the code) then below write what you expect to happen when the funciton is invoked. *Hint: setTimeout calls a function or evaluates an expression after a specified number of milliseconds.
+callMeOnce();
+/*Run it one more time to see if it stops after 1x*/
+callMeOnce();
 
-    //Answer Here
+// 5 //
+/*Write a function called 'fnCounter' that accepts two parameters.*/
+/*The first parameter will be an anonymous function and the second parameter, 'N', will be a number.*/
+/*Now, in 'fnCounter', allow the anonymous function to be invoked 'N' number of times.*/
+/*After it's been invoked 'N' number of times, return 'STOP'.*/
+var fnCounter = function (callBack, N) {
+  for (var i = 0; i < N; i++) {
+    callBack();
+  }
+  return "STOP";
+};
+ 
+// 6 //  
+var counter = function () {
+  for (var i = 1; i <= 5; i++) {
+    setTimeout(function timer() {
+      console.log(i);
+    }, i * 1000);
+  }
+};
+// counter();
+/*Above you have a function named counter. Examine the function (without running the code) 
+then below write what you expect to happen when the funciton is invoked. 
+*Hint: setTimeout calls a function or evaluates an expression after a specified number of milliseconds.*/
+// Counter will console.log "1" after one second, "2" after two seconds and so on until it hits five seconds.
 
+/*Now, run the function in your console and note what happpens.*/
+// Not quite, it just revealed all of the numbers at once, instead of adding up as the seconds passed
 
-  Now, run the function in your console and note what happpens.
+/*Fix the counter function so that it works the way you expect it to work. (logging 1 then 2 then 3, etc)*/
+/*(stack overflow for this --> http://stackoverflow.com/questions/20384719/why-does-javascript-settimeout-not-work-in-a-loop)*/
+var counter = function(){
+    for (var i = 1; i <= 5; i++) {
+      setTimeout( (function(i) { 
+          return function timer() {
+            console.log(i);
+          }
+      })(i), i * 1000 );
+    }
+  };
+  counter();
 
-  Was your answer right or wrong?
-
-    //Answer Here
-
-
-  Fix the counter function so that it works the way you expect it to work. (logging 1 then 2 then 3, etc)
-*/
-
-    //Code Here
-
-
-
-//Next Problem
-
-
-
-/*
-  Make the following code work
+// 7 //
+/*Make the following code work
 
   funcArray[0]() //0
   funcArray[1]() //1
@@ -106,7 +118,13 @@ After it's been invoked 'N' number of times, return 'STOP'.*/
   funcArray[4]() //4
   funcArray[5]() //5
 
-  *Hint: Don't let this fool you. Break down what's really happening here.
-*/
-
+  *Hint: Don't let this fool you. Break down what's really happening here.*/
+var funcArray = [
+    function() {console.log(0)},
+    function() {console.log(1)},
+    function() {console.log(2)},
+    function() {console.log(3)},
+    function() {console.log(4)},
+    function() {console.log(5)},
+];
 
